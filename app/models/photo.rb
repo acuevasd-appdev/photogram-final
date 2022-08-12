@@ -21,6 +21,7 @@ class Photo < ApplicationRecord
   has_many(:fans, { :through => :likes, :source => :user })
   has_many(:followers, { :through => :owner, :source => :following })
   has_many(:fan_followers, { :through => :fans, :source => :following })
+  #has_one(:privacy_setting, { :through =>:owner, :source => :privacy})
 
   validates(:owner_id, { :presence => true })
   validates(:image, { :presence => true })

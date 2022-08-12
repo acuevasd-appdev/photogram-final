@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   get("/", { :controller => "user_authentication", :action => "index" })   
   get("/users", { :controller => "user_authentication", :action => "index" })   
   get("/users/:username", { :controller => "user_authentication", :action => "show" }) 
-
+  get("/users/:username/feed", { :controller => "user_authentication", :action => "feed" }) 
+  get("/users/:username/liked_photos", { :controller => "user_authentication", :action => "liked_photos" }) 
+  get("/users/:username/discover", { :controller => "user_authentication", :action => "discover" }) 
 
   # Routes for the User account:
 

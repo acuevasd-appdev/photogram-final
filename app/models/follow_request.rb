@@ -17,4 +17,5 @@ class FollowRequest < ApplicationRecord
   validates(:sender_id, { :presence => true })
   validates(:recipient_id, { :presence => true })
   validates(:recipient_id, { :uniqueness => { :scope => ["sender_id"], :message => "already requested" } })
+  #validates(:status, ) "pending","accepted","rejected"
 end

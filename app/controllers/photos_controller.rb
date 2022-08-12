@@ -1,5 +1,9 @@
 class PhotosController < ApplicationController
   def index
+    #matching_photos = Photo.where(:owner)
+    #matching_photos = Photo.where(:privacy_setting => :false)
+
+
     matching_photos = Photo.all
 
     @list_of_photos = matching_photos.order({ :created_at => :desc })
@@ -21,9 +25,9 @@ class PhotosController < ApplicationController
     the_photo = Photo.new
     the_photo.caption = params.fetch("query_caption")
     the_photo.image = params.fetch("query_image")
-    the_photo.owner_id = params.fetch("query_owner_id")
-    the_photo.likes_count = params.fetch("query_likes_count")
-    the_photo.comments_count = params.fetch("query_comments_count")
+    the_photo.owner_id = session[:user_id]
+    the_photo.likes_count = 0
+    the_photo.comments_count = 0
 
     if the_photo.valid?
       the_photo.save
