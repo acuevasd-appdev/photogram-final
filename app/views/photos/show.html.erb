@@ -12,20 +12,15 @@
       </div>
 
       <div>
+      <% if @current_user.id == @the_photo.owner_id %>
         <a href="/delete_photo/<%= @the_photo.id %>">
-          Delete photo
+          Delete this photo
         </a>
+      <%end%>
       </div>
     </div>
 
     <dl>
-      <dt>
-        Caption
-      </dt>
-      <dd>
-        <%= @the_photo.caption %>
-      </dd>
-
       <dt>
         Image
       </dt>
@@ -34,10 +29,24 @@
       </dd>
 
       <dt>
+        Caption
+      </dt>
+      <dd>
+        <%= @the_photo.caption %>
+      </dd>
+
+      <dt>
         Owner
       </dt>
       <dd>
-        <%= @the_photo.owner_id %>
+        <%= @the_photo.owner.username %>
+      </dd>
+
+      <dt>
+        Posted
+      </dt>
+      <dd>
+        <%= @the_photo.created_at %>
       </dd>
 
       <dt>
@@ -55,23 +64,81 @@
       </dd>
 
       <dt>
-        Created at
+        Fans
       </dt>
       <dd>
-        <%= time_ago_in_words(@the_photo.created_at) %> ago
+        <% @the_photo.fans.each do |a_fan| %>
+        <%= a_fan.username %>
+        <%end%>
       </dd>
 
       <dt>
-        Updated at
+        Add a fan
       </dt>
       <dd>
-        <%= time_ago_in_words(@the_photo.updated_at) %> ago
+        <% if @current_user.id != nil %>
+          <% like_id = Like.where({:photo_id => @the_photo.id,:fan_id =>@current_user.id}) %>
+          <% if like_id != nil%>
+            <a href="/delete_like/<%=like_id%>">Unlike</a>
+          <% else %>
+            <form action="/insert_like" method="post">
+                <input type="hidden" id="image_like" name="query_photo_id" value="<%=@the_photo.id%>">
+                <button>
+                  Like
+                </button>
+            </form>
+          <%end%>
+        <%end%>
       </dd>
     </dl>
   </div>
 </div>
 
-<hr>
+<h2>Comments</h2>
+
+<table>
+  <tr>
+    <th>Commenter</th>
+    <th>Comment</th>
+    <th>Posted</th>
+  </tr>
+
+  <% @the_photo.comments.each do |comment| %>
+  <tr>
+    <td>
+      <%= comment.commenter.username %>
+    </td>
+
+    <td>
+      <%= comment.body %>
+    </td>
+
+    <td>
+      <%= comment.created_at %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+
+<h3>Add a new comment</h3>
+
+<form action="/insert_comment_record">
+  <input id="browser_photo_id" type="hidden" value="<%= @the_photo.id %>" name="input_photo_id">
+
+  <label for="browser_comment">Comment</label>
+  <textarea id="browser_comment" name="input_body" placeholder="Enter a comment..."></textarea>
+
+  <button>Add comment</button>
+</form>
+
+
+
+
+
+
+
+
 
 
 <div>

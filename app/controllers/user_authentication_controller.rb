@@ -1,6 +1,6 @@
 class UserAuthenticationController < ApplicationController
   # Uncomment line 3 in this file and line 5 in ApplicationController if you want to force users to sign in before any other actions.
-  # skip_before_action(:force_user_sign_in, { :only => [:sign_up_form, :create, :sign_in_form, :create_cookie] })
+  skip_before_action(:force_user_sign_in, { :only => [:sign_up_form, :create, :sign_in_form, :create_cookie] })
 
   def index
     matching_users = User.all
@@ -9,8 +9,40 @@ class UserAuthenticationController < ApplicationController
   end
 
   def show
+    the_username = params.fetch("username")
+    @the_user = User.where({ :username => the_username }).at(0)
+    @pending_requests = FollowRequest.where(:recipient_id => @the_user.id, :status =>"pending")
     render({ :template => "users/show.html.erb" })
   end
+
+  def feed
+    the_username = params.fetch("username")
+    @the_user = User.where({ :username => the_username }).at(0)
+    matching_photos = @the_user.feed
+    @list_of_photos = matching_photos.order({ :created_at => :desc })
+
+    render({ :template => "users/feed.html.erb" })
+  end
+
+  def liked_photos
+    the_username = params.fetch("username")
+    @the_user = User.where({ :username => the_username }).at(0)
+    matching_photos = @the_user.liked_photos
+    @list_of_photos = matching_photos.order({ :created_at => :desc })
+
+    render({ :template => "users/likes.html.erb" })
+  end
+
+  def discover
+    the_username = params.fetch("username")
+    @the_user = User.where({ :username => the_username }).at(0)
+    #Likes of followers
+    matching_photos = @the_user.feed
+    @list_of_photos = matching_photos.order({ :created_at => :desc })
+
+    render({ :template => "users/discover.html.erb" })
+  end
+
 
   def sign_in_form
     render({ :template => "user_authentication/sign_in.html.erb" })

@@ -14,21 +14,21 @@
     <h2>
       Add a new photo
     </h2>
-    <form action="/insert_photo" method="post">
+    <form action="/insert_photo" method="post" enctype="multipart/form-data">
+        <div>
+          <label for="image_box">
+            Image
+          </label>
+          <input type="file" id="image_box" name="query_image">
+        </div>
       <div>
         <label for="caption_box">
           Caption
         </label>
 
-        <textarea id="caption_box" name="query_caption" rows="3"></textarea>
+        <textarea id="caption_box" name="query_caption" rows="3" placeholder="Enter a caption for the photo..."></textarea>
       </div>
 
-      <div>
-        <label for="image_box">
-          Image
-        </label>
-        <input type="text" id="image_box" name="query_image">
-      </div>
       <button>
         Add photo
       </button>
@@ -45,7 +45,7 @@
     <table border="1">
       <tr>
         <th>
-          ID
+          Image
         </th>
 
         <th>
@@ -53,11 +53,11 @@
         </th>
 
         <th>
-          Image
+          Owner
         </th>
 
         <th>
-          Owner
+          Posted
         </th>
 
         <th>
@@ -65,26 +65,14 @@
         </th>
 
         <th>
-          Comments count
-        </th>
-
-        <th>
-          Created at
-        </th>
-
-        <th>
-          Updated at
-        </th>
-
-        <th>
         </th>
       </tr>
 
       <% @list_of_photos.each do |a_photo| %>
-        <% if !a_photo.owner.privacy %>
+        <% if !a_photo.owner.private %>
           <tr>
             <td>
-              <%= a_photo.id %>
+              <img src="<%= a_photo.image%>" class="img-responsive">
             </td>
 
             <td>
@@ -92,26 +80,15 @@
             </td>
 
             <td>
-              <img src="<%= a_photo.image%>" style ="width:250px;">
-            </td>
-
-            <td>
               <%= a_photo.owner.username %>
-            </td>
-
-            <td>
-              <%= a_photo.likes_count %>
-            </td>
-
-            <td>
-              <%= a_photo.comments_count %>
             </td>
 
             <td>
               <%= time_ago_in_words(a_photo.created_at) %> ago
             </td>
+
             <td>
-              <%= time_ago_in_words(a_photo.updated_at) %> ago
+              <%= a_photo.likes_count %>
             </td>
 
             <td>
