@@ -15,6 +15,24 @@
   </head>
 
   <body>
+    <nav>
+      <ul>
+        <li><a href="/users">All users</a></li>
+        <li><a href="/photos">All public photos</a></li>
+        <% if session[:user_id]== nil %> 
+          <li><a href="/user_sign_in">Sign in</a></li>
+          <li><a href="/user_sign_up">Sign up</a></li>
+        <% else %>
+          <li><a href="/<%= @current_user.username %>"><%= @current_user.username %></a></li>
+          <li><a href="/user_sign_out">Sign out</a></li>
+        <% end %>
+        
+
+      </ul>
+    </nav>
+    <p style="color: green"><%=notice%></p>
+    <p style="color: red"><%=alert%></p>
+
     <%= yield %>
   </body>
 </html>
