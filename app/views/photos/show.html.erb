@@ -77,9 +77,9 @@
       </dt>
       <dd>
         <% if @current_user.id != nil %>
-          <% like_id = Like.where({:photo_id => @the_photo.id,:fan_id =>@current_user.id}) %>
-          <% if like_id != nil%>
-            <a href="/delete_like/<%=like_id%>">Unlike</a>
+          <% like = Like.where({:photo_id => @the_photo.id,:fan_id =>@current_user.id}).at(0) %>
+          <% if like != nil %>
+            <a href="/delete_like/<%=like.id%>">Unlike</a>
           <% else %>
             <form action="/insert_like" method="post">
                 <input type="hidden" id="image_like" name="query_photo_id" value="<%=@the_photo.id%>">
@@ -140,7 +140,7 @@
 
 
 
-
+<% if @the_photo.owner_id == @current_user.id%>
 <div>
   <div>
     <h2>
@@ -169,23 +169,7 @@
           Owner
         </label>
 
-        <input type="text" id="owner_id_box" name="query_owner_id" value="<%= @the_photo.owner_id %>">
-      </div>
-
-      <div>
-        <label for="likes_count_box">
-          Likes count
-        </label>
-
-        <input type="text" id="likes_count_box" name="query_likes_count" value="<%= @the_photo.likes_count %>">
-      </div>
-
-      <div>
-        <label for="comments_count_box">
-          Comments count
-        </label>
-
-        <input type="text" id="comments_count_box" name="query_comments_count" value="<%= @the_photo.comments_count %>">
+        <input type="hidden" id="owner_id_box" name="query_owner_id" value="<%= @the_photo.owner_id %>">
       </div>
 
       <button>
@@ -194,5 +178,5 @@
     </form>
   </div>
 </div>
-
+<%end%>
 <hr>

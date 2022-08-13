@@ -36,6 +36,7 @@ class UserAuthenticationController < ApplicationController
   def discover
     the_username = params.fetch("username")
     @the_user = User.where({ :username => the_username }).at(0)
+    
     #Likes of followers
     matching_photos = @the_user.feed
     @list_of_photos = matching_photos.order({ :created_at => :desc })
@@ -71,7 +72,7 @@ class UserAuthenticationController < ApplicationController
   def destroy_cookies
     reset_session
 
-    redirect_to("/", { :notice => "Signed out successfully." })
+    redirect_to("/", { :notice => "Signed out successfully" })
   end
 
   def sign_up_form
@@ -84,12 +85,12 @@ class UserAuthenticationController < ApplicationController
     @user.password = params.fetch("query_password")
     @user.password_confirmation = params.fetch("query_password_confirmation")
     @user.username = params.fetch("query_username")
-    @user.comments_count = params.fetch("query_comments_count")
-    @user.likes_count = params.fetch("query_likes_count")
+    @user.comments_count = 0
+    @user.likes_count = 0
     @user.private = params.fetch("query_private", false)
-    @user.sent_follow_requests_count = params.fetch("query_sent_follow_requests_count")
-    @user.received_follow_requests_count = params.fetch("query_received_follow_requests_count")
-    @user.own_photos_count = params.fetch("query_own_photos_count")
+    @user.sent_follow_requests_count = 0
+    @user.received_follow_requests_count = 0
+    @user.own_photos_count = 0
 
     save_status = @user.save
 

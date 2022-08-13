@@ -1,0 +1,108 @@
+<div>
+  <div>
+    <h1>
+      <%=  @the_user.username%>'s discover
+    </h1>
+  </div>
+</div>
+
+
+<h1>
+  <%= @the_user.username %>
+</h1>
+
+
+<dl>
+  <dt>
+    Private?
+  </dt>
+  <dd>
+    <%= @the_user.private %>
+  </dd>
+  <dt>
+    Followers
+  </dt>
+  <dd>
+    <%= @the_user.followers.count %>
+  </dd>
+  <dt>
+    Following
+  </dt>
+  <dd>
+    <%= @the_user.following.count %>
+  </dd>
+</dl>
+
+
+<ul>
+  <li><a href="/users/<%= @the_user.username %>">Profile</a></li>
+  <li><a href="/users/<%= @the_user.username %>/feed">Feed</a></li>
+  <li><a href="/users/<%= @the_user.username %>/liked_photos">Liked Photos</a></li>
+  <li><a href="/users/<%= @the_user.username %>/discover">Discover</a></li>
+</ul>
+
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          Image
+        </th>
+
+        <th>
+          Caption
+        </th>
+
+        <th>
+          Owner
+        </th>
+
+        <th>
+          Posted
+        </th>
+
+        <th>
+          Likes count
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @list_of_photos.each do |a_photo| %>
+        <% if !a_photo.owner.private %>
+          <tr>
+            <td>
+              <img src="<%= a_photo.image%>" class="img-responsive">
+            </td>
+
+            <td>
+              <%= a_photo.caption %>
+            </td>
+
+            <td>
+              <%= a_photo.owner.username %>
+            </td>
+
+            <td>
+              <%= time_ago_in_words(a_photo.created_at) %> ago
+            </td>
+
+            <td>
+              <%= a_photo.likes_count %>
+            </td>
+
+            <td>
+              <a href="/photos/<%= a_photo.id %>">
+                Show details
+              </a>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>
