@@ -34,6 +34,12 @@
       <dd>
         <%= @the_user.private %>
       </dd>
+      <dt>
+        Related photos
+      </dt>
+      <dd>
+        <%= @the_user.feed.count %>
+      </dd>
 </dl>
 
 <% if @current_user != nil %>
