@@ -19,6 +19,7 @@ class UserAuthenticationController < ApplicationController
     the_username = params.fetch("username")
     @the_user = User.where({ :username => the_username }).at(0)
     matching_photos = @the_user.feed
+    #matching_photos = all_photos_feeduser.where({ :status => "accepted"})
     @list_of_photos = matching_photos.order({ :created_at => :desc })
 
     render({ :template => "users/feed.html.erb" })
