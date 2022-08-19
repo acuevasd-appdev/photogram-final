@@ -1,6 +1,6 @@
 class UserAuthenticationController < ApplicationController
   # Uncomment line 3 in this file and line 5 in ApplicationController if you want to force users to sign in before any other actions.
-  skip_before_action(:force_user_sign_in, { :only => [:sign_up_form, :create, :sign_in_form, :create_cookie] })
+  #skip_before_action(:force_user_sign_in, { :only => [:sign_up_form, :create, :sign_in_form, :create_cookie] })
 
   def index
     matching_users = User.all
@@ -9,10 +9,15 @@ class UserAuthenticationController < ApplicationController
   end
 
   def show
-    the_username = params.fetch("username")
-    @the_user = User.where({ :username => the_username }).at(0)
-    @pending_requests = FollowRequest.where(:recipient_id => @the_user.id, :status =>"pending")
-    render({ :template => "users/show.html.erb" })
+    if session.fetch(:user_id) != nil
+      the_username = params.fetch("username")
+      @the_user = User.where({ :username => the_username }).at(0)
+      @pending_requests = FollowRequest.where(:recipient_id => @the_user.id, :status =>"pending")
+      render({ :template => "users/show.html.erb" })
+    else
+      redirect_to("/user_sign_in", { :notice => "You have to sign in first." })
+    end  
+    
   end
 
   def feed
@@ -131,7 +136,7 @@ class UserAuthenticationController < ApplicationController
   end
 
   def destroy
-    @current_user.destroy
+    #@current_user.destroy
     reset_session
     
     redirect_to("/", { :notice => "User account cancelled" })
